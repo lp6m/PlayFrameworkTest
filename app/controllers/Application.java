@@ -67,5 +67,28 @@ public class Application extends Controller {
         }else{
             return ok(edit.render("ERROR: please input again.", f));
         }
-     }
+	}
+
+	public static Result delete(){
+		Form<Message> f = new Form(Message.class);
+		return ok(delete.render("delete id number",f));
+	}
+	public static Result remove(){
+		Form<Message> f = new Form(Message.class).bindFromRequest();
+		if(!f.hasErrors()){
+			Message obj = f.get();
+			Long id = obj.id;
+			obj = Message.find.byId(id);
+			if (obj != null){
+				obj.delete();
+				return redirect("/");
+			}else{
+				return ok(delete.render("Error: The id is not found", f));
+
+			}
+		}else{
+			return ok(delete.render("Error: An error occurred while your input.",f));
+		}
+					
+	}
 }
